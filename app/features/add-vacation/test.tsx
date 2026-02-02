@@ -1,0 +1,92 @@
+import { render, screen, fireEvent } from "@testing-library/react";
+import AddVacation from ".";
+
+describe("AddVacation", () => {
+  it("renders modal title", () => {
+    render(<AddVacation close={jest.fn()} />);
+
+    expect(
+      screen.getByText("Solicitar férias para colaborador"),
+    ).toBeInTheDocument();
+  });
+
+  it("renders all form fields", () => {
+    render(<AddVacation close={jest.fn()} />);
+
+    expect(screen.getByLabelText("Nome")).toBeInTheDocument();
+    expect(screen.getByLabelText("Data Inicial")).toBeInTheDocument();
+    expect(screen.getByLabelText("Data Final")).toBeInTheDocument();
+    expect(
+      screen.getByLabelText("Aguardando aprovação pelo gestor"),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByLabelText("Férias aprovadas pelo gestor"),
+    ).toBeInTheDocument();
+  });
+
+  it("updates name input value", () => {
+    render(<AddVacation close={jest.fn()} />);
+
+    const input = screen.getByLabelText("Nome") as HTMLInputElement;
+
+    fireEvent.change(input, {
+      target: { value: "João Silva" },
+    });
+
+    expect(input.value).toBe("João Silva");
+  });
+
+  it("updates date inputs", () => {
+    render(<AddVacation close={jest.fn()} />);
+
+    const start = screen.getByLabelText("Data Inicial") as HTMLInputElement;
+    const end = screen.getByLabelText("Data Final") as HTMLInputElement;
+
+    fireEvent.change(start, {
+      target: { value: "2026-02-10" },
+    });
+
+    fireEvent.change(end, {
+      target: { value: "2026-02-20" },
+    });
+
+    expect(start.value).toBe("2026-02-10");
+    expect(end.value).toBe("2026-02-20");
+  });
+
+  it("changes status when radio selected", () => {
+    render(<AddVacation close={jest.fn()} />);
+
+    const approvedRadio = screen.getByLabelText(
+      "Férias aprovadas pelo gestor",
+    ) as HTMLInputElement;
+
+    fireEvent.click(approvedRadio);
+
+    expect(approvedRadio.checked).toBe(true);
+  });
+
+  it("calls close when clicking Cancelar button", () => {
+    const closeMock = jest.fn();
+
+    render(<AddVacation close={closeMock} />);
+
+    const cancelButton = screen.getByText("Cancelar");
+
+    fireEvent.click(cancelButton);
+
+    expect(closeMock).toHaveBeenCalledTimes(1);
+  });
+
+  it("should call close when clicking Confirmar Solicitação button", () => {
+    const closeMock = jest.fn();
+
+    render(<AddVacation close={closeMock} />);
+
+    const confirmButton = screen.getByText("Confirmar Solicitação");
+
+    fireEvent.click(confirmButton);
+
+    expect(closeMock).toHaveBeenCalledTimes(1);
+  });
+});
