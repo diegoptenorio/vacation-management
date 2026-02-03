@@ -1,6 +1,7 @@
 "use client";
 
 interface ButtonProps {
+  disabled?: boolean;
   text: string;
   onClick: () => void;
   variant?: "active" | "default";
@@ -9,6 +10,7 @@ interface ButtonProps {
 export default function Button({
   text,
   onClick,
+  disabled = false,
   variant = "default",
 }: ButtonProps) {
   const baseClasses = `
@@ -19,6 +21,10 @@ export default function Button({
     px-[25px]
     py-[16px]
     transition-colors
+    disabled:bg-gray-400
+    disabled:cursor-default
+    w-full
+    sm:w-auto
   `;
 
   const variants = {
@@ -27,7 +33,11 @@ export default function Button({
   };
 
   return (
-    <button onClick={onClick} className={`${baseClasses} ${variants[variant]}`}>
+    <button
+      onClick={onClick}
+      disabled={disabled}
+      className={`${baseClasses} ${variants[variant]}`}
+    >
       {text}
     </button>
   );
