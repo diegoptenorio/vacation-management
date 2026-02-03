@@ -1,14 +1,22 @@
 import { render, screen, fireEvent } from "@testing-library/react";
 import { useFetch } from "../../hooks/use-fetch";
+import { useValidation } from "../../hooks/use-validation";
 import AddVacation from ".";
 
 jest.mock("../../hooks/use-fetch");
+jest.mock("../../hooks/use-validation");
 
 const mockExecute = jest.fn();
+const mockValidate = jest.fn();
 
 (useFetch as jest.Mock).mockReturnValue({
   execute: mockExecute,
   status: "initial",
+});
+
+(useValidation as jest.Mock).mockReturnValue({
+  handleValidation: mockValidate,
+  formErrors: {},
 });
 
 describe("AddVacation", () => {
@@ -38,7 +46,7 @@ describe("AddVacation", () => {
     render(<AddVacation close={jest.fn()} />);
 
     const input = screen.getByLabelText("Nome") as HTMLInputElement;
-
+    
     fireEvent.change(input, {
       target: { value: "João Silva" },
     });
@@ -92,6 +100,22 @@ describe("AddVacation", () => {
     const closeMock = jest.fn();
 
     render(<AddVacation close={closeMock} />);
+
+    const input = screen.getByLabelText("Nome") as HTMLInputElement;
+    const start = screen.getByLabelText("Data Inicial") as HTMLInputElement;
+    const end = screen.getByLabelText("Data Final") as HTMLInputElement;
+
+    fireEvent.change(input, {
+      target: { value: "João Silva" },
+    });
+
+    fireEvent.change(start, {
+      target: { value: "2026-02-10" },
+    });
+
+    fireEvent.change(end, {
+      target: { value: "2026-02-20" },
+    });
 
     const confirmButton = screen.getByText("Confirmar Solicitação");
 
