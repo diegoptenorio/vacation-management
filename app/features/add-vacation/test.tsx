@@ -1,5 +1,15 @@
 import { render, screen, fireEvent } from "@testing-library/react";
+import { useFetch } from "../../hooks/use-fetch";
 import AddVacation from ".";
+
+jest.mock("../../hooks/use-fetch");
+
+const mockExecute = jest.fn();
+
+(useFetch as jest.Mock).mockReturnValue({
+  execute: mockExecute,
+  status: "initial",
+});
 
 describe("AddVacation", () => {
   it("renders modal title", () => {
@@ -87,6 +97,6 @@ describe("AddVacation", () => {
 
     fireEvent.click(confirmButton);
 
-    expect(closeMock).toHaveBeenCalledTimes(1);
+    expect(mockExecute).toHaveBeenCalledTimes(1);
   });
 });
