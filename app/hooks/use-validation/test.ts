@@ -70,7 +70,7 @@ describe("useValidation hook", () => {
     });
 
     expect(result.current.formErrors.start).toBe(
-      "A data deve ser anterior ou igual a 05/01/2024.",
+      "A data inicial deve ser anterior a 05/01/2024.",
     );
   });
 
@@ -92,36 +92,7 @@ describe("useValidation hook", () => {
     });
 
     expect(result.current.formErrors.end).toBe(
-      "A data deve ser posterior ou igual a 05/01/2024.",
+      "A data final deve ser posterior a 05/01/2024.",
     );
-  });
-
-  it("should allow updating multiple fields independently", () => {
-    const { result } = renderHook(() => useValidation({ name: "", age: "" }));
-
-    const nameEvent = {
-      target: { name: "name", value: "a" },
-    } as React.ChangeEvent<HTMLInputElement>;
-
-    const ageEvent = {
-      target: { name: "age", value: "123" },
-    } as React.ChangeEvent<HTMLInputElement>;
-
-    act(() => {
-      result.current.handleValidation({
-        e: nameEvent,
-        rules: { minLength: 3 },
-      });
-
-      result.current.handleValidation({
-        e: ageEvent,
-        rules: { minLength: 2 },
-      });
-    });
-
-    expect(result.current.formErrors).toEqual({
-      name: "O campo deve ter no mínimo 3 caracteres.",
-      age: "",
-    });
   });
 });

@@ -13,13 +13,11 @@ export function useFetch<T = unknown>() {
 
   const execute = useCallback(
     async (url: string, options?: RequestInit) => {
-      const controller = new AbortController();
 
       try {
         setStatus("loading");
         const response = await fetch(url, {
           ...options,
-          signal: controller.signal,
         });
 
         if (!response.ok) {
@@ -36,8 +34,6 @@ export function useFetch<T = unknown>() {
         setStatus("error");
         throw err;
       }
-
-      return () => controller.abort();
     },
     [],
   );
