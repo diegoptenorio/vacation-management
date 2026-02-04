@@ -4,6 +4,7 @@ import Modal from "../../components/modal";
 import { useFetch } from "../../hooks/use-fetch";
 import { useValidation } from "../../hooks/use-validation";
 import ENDPOINT from "../../constants/endpoint";
+import Title from "@/app/components/title";
 
 interface AddVacationProps {
   close: () => void;
@@ -45,9 +46,7 @@ export default function AddVacation({ close }: AddVacationProps) {
   return (
     <Modal
       header={
-        <h3 className="font-bold text-[20px] text-[#52555E]">
-          Solicitar férias para colaborador
-        </h3>
+        <Title type="h3">Solicitar férias para colaborador</Title>
       }
       body={
         <>

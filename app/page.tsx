@@ -1,11 +1,14 @@
+import Title from "./components/title";
 import MainActions from "./features/main-actions";
+import VacationList from "./features/vacation-list";
 
 export default function Home() {
   return (
     <>
-      <h1 className="text-[25px] font-bold text-black">Férias</h1>
-      <h2 className="mb-[30px] text-[#80878D]">Painel</h2>
+      <Title type="h1">Férias</Title>
+      <Title type="h2">Painel</Title>
       <MainActions />
+      <VacationList />
     </>
   );
 }

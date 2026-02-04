@@ -11,7 +11,7 @@ import AddVacation from "../add-vacation";
 export default function MainActions() {
   const [isAddVacationModalOpen, setIsAddVacationModalOpen] = useState(false);
   return (
-    <>
+    <section className="mt-[30px]">
       <Card>
         <Menu
           actions={[
@@ -42,6 +42,6 @@ export default function MainActions() {
       {isAddVacationModalOpen && (
         <AddVacation close={() => setIsAddVacationModalOpen(false)} />
       )}
-    </>
+    </section>
   );
 }

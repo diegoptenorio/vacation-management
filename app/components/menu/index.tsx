@@ -34,7 +34,7 @@ export default function Menu({ actions }: MenuProps) {
           "
         >
           <span className="flex items-center">{action.leftIcon}</span>
-          <span className="flex-1 text-left font-medium text-gray-800">
+          <span className="flex-1 text-left font-medium text-[#555555]">
             {action.label}
           </span>
           <span className="flex items-center">
