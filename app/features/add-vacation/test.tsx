@@ -20,6 +20,10 @@ const mockValidate = jest.fn();
 });
 
 describe("AddVacation", () => {
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
+
   it("renders modal title", () => {
     render(<AddVacation close={jest.fn()} />);
 
@@ -96,7 +100,7 @@ describe("AddVacation", () => {
     expect(closeMock).toHaveBeenCalledTimes(1);
   });
 
-  it("should call close when clicking Confirmar Solicitação button", () => {
+  it("should call fetch when clicking Confirmar Solicitação button", () => {
     const closeMock = jest.fn();
 
     render(<AddVacation close={closeMock} />);
@@ -122,5 +126,73 @@ describe("AddVacation", () => {
     fireEvent.click(confirmButton);
 
     expect(mockExecute).toHaveBeenCalledTimes(1);
+  });
+
+  it("should prevent fetch when clicking Confirmar Solicitação button if name has errors", () => {
+    (useValidation as jest.Mock).mockReturnValue({
+      handleValidation: mockValidate,
+      formErrors: { name: "O campo deve ter no mínimo 3 caracteres." },
+    });
+
+    const closeMock = jest.fn();
+
+    render(<AddVacation close={closeMock} />);
+
+    const input = screen.getByLabelText("Nome") as HTMLInputElement;
+    const errorMessage = screen.getByText(
+      "O campo deve ter no mínimo 3 caracteres.",
+    ) as HTMLParagraphElement;
+
+    fireEvent.change(input, {
+      target: { value: "Jo" },
+    });
+
+    fireEvent.blur(input);
+
+    const confirmButton = screen.getByText("Confirmar Solicitação");
+
+    fireEvent.click(confirmButton);
+
+    expect(errorMessage).toBeInTheDocument();
+
+    expect(mockExecute).not.toHaveBeenCalled();
+  });
+
+  it("should prevent fetch when clicking Confirmar Solicitação button if date has errors", () => {
+    (useValidation as jest.Mock).mockReturnValue({
+      handleValidation: mockValidate,
+      formErrors: {
+        startDate: "A data final deve ser posterior a 10/03/2026.",
+      },
+    });
+
+    const closeMock = jest.fn();
+
+    render(<AddVacation close={closeMock} />);
+
+    const start = screen.getByLabelText("Data Inicial") as HTMLInputElement;
+    const end = screen.getByLabelText("Data Final") as HTMLInputElement;
+    const errorMessage = screen.getByText(
+      "A data final deve ser posterior a 10/03/2026.",
+    ) as HTMLParagraphElement;
+
+    fireEvent.change(start, {
+      target: { value: "2026-02-10" },
+    });
+
+    fireEvent.change(end, {
+      target: { value: "2026-02-09" },
+    });
+
+    fireEvent.blur(start);
+    fireEvent.blur(end);
+
+    const confirmButton = screen.getByText("Confirmar Solicitação");
+
+    fireEvent.click(confirmButton);
+
+    expect(errorMessage).toBeInTheDocument();
+
+    expect(mockExecute).not.toHaveBeenCalled();
   });
 });
