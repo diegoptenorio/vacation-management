@@ -1,7 +1,5 @@
 const ENDPOINT = {
-    VACATIONS: {
-        POST: "/api/v1/vacations",
-    },
+    VACATIONS: "/api/v1/vacations",
 };
 
 export default ENDPOINT;

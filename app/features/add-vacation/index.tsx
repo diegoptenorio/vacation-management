@@ -31,7 +31,7 @@ export default function AddVacation({ close }: AddVacationProps) {
   }
 
   const confirmNewVacation = () => {
-    execute(ENDPOINT.VACATIONS.POST, {
+    execute(ENDPOINT.VACATIONS, {
       method: "POST",
       body: JSON.stringify(form),
     });
