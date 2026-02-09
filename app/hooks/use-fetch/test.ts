@@ -35,6 +35,30 @@ describe("useFetch", () => {
         );
 
         expect(result.current.status).toBe("success");
+        expect(result.current.data).toEqual(mockResponse); 
+    });
+
+    it("should fetch data successfully with query string", async () => {
+        const mockResponse = { name: "João" };
+
+        global.fetch = jest.fn().mockResolvedValue({
+            ok: true,
+            json: async () => mockResponse,
+        } as unknown);
+
+        const { result } = renderHook(() => useFetch<typeof mockResponse>());
+
+        await act(async () => {
+            const data = await result.current.execute("/api/test", { params: { page: "2" } });
+            expect(data).toEqual(mockResponse);
+        });
+
+        expect(fetch).toHaveBeenCalledWith(
+            "/api/test?page=2",
+            expect.objectContaining({}),
+        );
+
+        expect(result.current.status).toBe("success");
         expect(result.current.data).toEqual(mockResponse);
     });
 
@@ -127,7 +151,7 @@ describe("useFetch", () => {
         const { result } = renderHook(() => useFetch());
 
         await expect(
-            result.current.execute("", {
+            result.current.execute(undefined as never, {
                 method: "POST",
                 body: JSON.stringify({ a: 1 }),
             }),

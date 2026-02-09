@@ -7,12 +7,30 @@ type Status = "initial" | "loading" | "success" | "error";
 interface RequestInit {
     method?: "GET" | "POST" | "PUT" | "DELETE";
     body?: BodyInit | null;
+    params?: Record<string, string | number | boolean | undefined>;
 }
 
 interface UseFetchOptions {
     auto?: boolean;
     url?: string;
     options?: RequestInit;
+}
+
+function buildUrlWithQuery(
+    baseUrl: string,
+    queryParams?: Record<string, string | number | boolean | undefined>,
+): string {
+    if (!queryParams || Object.keys(queryParams).length === 0) {
+        return baseUrl;
+    }
+
+    const queryString = new URLSearchParams(
+        Object.entries(queryParams)
+            .filter(([, value]) => value !== undefined)
+            .map(([key, value]) => [key, String(value)]),
+    ).toString();
+
+    return `${baseUrl}?${queryString}`;
 }
 
 export function useFetch<T = unknown>({
@@ -25,16 +43,17 @@ export function useFetch<T = unknown>({
 
     const execute = useCallback(
         async (requestUrl?: string, requestOptions?: RequestInit) => {
-            const finalUrl = requestUrl ?? url;
+            const finalUrl = requestUrl ?? url ?? "";
+            const mountedUrl = buildUrlWithQuery(finalUrl, requestOptions?.params);
 
-            if (!finalUrl) {
+            if (!mountedUrl) {
                 throw new Error("URL is required");
             }
 
             try {
                 setStatus("loading");
 
-                const response = await fetch(finalUrl, {
+                const response = await fetch(mountedUrl, {
                     ...options,
                     ...requestOptions,
                 });

@@ -38,10 +38,10 @@ export default function Table({ header, content }: TableProps) {
                             {vacation.name}
                         </td>
                         <td className="py-4 text-[#555555] text-[12px]">
-                            {vacation.start_date}
+                            {new Date(vacation.start_date).toLocaleDateString("pt-BR")}
                         </td>
                         <td className="py-4 text-[#555555] text-[12px]">
-                            {vacation.end_date}
+                            {new Date(vacation.end_date).toLocaleDateString("pt-BR")}
                         </td>
                         <td className="py-4 text-[#555555] text-[12px]"></td>
                     </tr>
