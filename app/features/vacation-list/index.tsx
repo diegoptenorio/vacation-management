@@ -33,7 +33,7 @@ interface DataProps {
 
 export default function VacationList() {
     const { status, data, execute } = useFetch<DataProps>({
-        auto: true,
+        auto: false,
         url: ENDPOINT.VACATIONS,
     });
 
