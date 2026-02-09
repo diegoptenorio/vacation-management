@@ -3,6 +3,8 @@
 import Table from "../../components/table";
 import Card from "../../components/card";
 import Title from "../../components/title";
+import Loading from "../../components/loading";
+import Fallback from "../../components/fallback";
 import { useFetch } from "../../hooks/use-fetch";
 import ENDPOINT from "../../constants/endpoint";
 
@@ -22,7 +24,7 @@ interface DataProps {
 }
 
 export default function VacationList() {
-    const { data } = useFetch<DataProps>({
+    const { status, data } = useFetch<DataProps>({
         auto: true,
         url: ENDPOINT.VACATIONS,
     });
@@ -33,12 +35,18 @@ export default function VacationList() {
 
     return (
         <section>
-            <Title type="h3" className="mt-[30px] mb-[16px]">
-                Lista
-            </Title>
-            <Card>
-                <Table header={header} content={content} />
-            </Card>
+            {status === "loading" && <Loading />}
+            {status === "error" && <Fallback />}
+            {status === "success" && (
+                <>
+                    <Title type="h3" className="mt-[30px] mb-[16px]">
+                        Lista
+                    </Title>
+                    <Card>
+                        <Table header={header} content={content} />
+                    </Card>
+                </>
+            )}
         </section>
     );
 }

@@ -4,7 +4,9 @@ import Modal from "../../components/modal";
 import { useFetch } from "../../hooks/use-fetch";
 import { useValidation } from "../../hooks/use-validation";
 import ENDPOINT from "../../constants/endpoint";
-import Title from "@/app/components/title";
+import Title from "../../components/title";
+import Loading from "../../components/loading";
+import Fallback from "../../components/fallback";
 
 interface AddVacationProps {
   close: () => void;
@@ -172,13 +174,10 @@ export default function AddVacation({ close }: AddVacationProps) {
               </div>
             </>
           )}
-          {status === "loading" && <p>Enviando solicitação...</p>}
+          {status === "loading" && <Loading />}
           {status === "error" && (
             <>
-              <p>
-                Ocorreu um erro ao enviar a solicitação. Tente novamente mais
-                tarde.
-              </p>
+              <Fallback />
               <div className="w-full flex items-center justify-end mt-8">
                 <Button text="Fechar" onClick={close} />
               </div>

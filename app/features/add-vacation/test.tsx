@@ -9,11 +9,6 @@ jest.mock("../../hooks/use-validation");
 const mockExecute = jest.fn();
 const mockValidate = jest.fn();
 
-(useFetch as jest.Mock).mockReturnValue({
-  execute: mockExecute,
-  status: "initial",
-});
-
 (useValidation as jest.Mock).mockReturnValue({
   handleValidation: mockValidate,
   formErrors: {},
@@ -24,15 +19,43 @@ describe("AddVacation", () => {
     jest.clearAllMocks();
   });
 
-  it("renders modal title", () => {
-    render(<AddVacation close={jest.fn()} />);
+  it("renders loading screen", () => {
+      (useFetch as jest.Mock).mockReturnValue({
+          execute: mockExecute,
+          status: "loading",
+      });
+      render(<AddVacation close={jest.fn()} />);
 
-    expect(
-      screen.getByText("Solicitar férias para colaborador"),
-    ).toBeInTheDocument();
+      expect(screen.getByTestId("loading")).toBeInTheDocument();
+  });
+
+  it("renders fallback screen", () => {
+      (useFetch as jest.Mock).mockReturnValue({
+          execute: mockExecute,
+          status: "error",
+      });
+      render(<AddVacation close={jest.fn()} />);
+
+      expect(screen.getByTestId("fallback")).toBeInTheDocument();
+  });
+
+  it("renders modal title", () => {
+    (useFetch as jest.Mock).mockReturnValue({
+        execute: mockExecute,
+        status: "initial",
+    });
+      render(<AddVacation close={jest.fn()} />);
+
+      expect(
+          screen.getByText("Solicitar férias para colaborador"),
+      ).toBeInTheDocument();
   });
 
   it("renders all form fields", () => {
+    (useFetch as jest.Mock).mockReturnValue({
+        execute: mockExecute,
+        status: "initial",
+    });
     render(<AddVacation close={jest.fn()} />);
 
     expect(screen.getByLabelText("Nome")).toBeInTheDocument();
@@ -47,6 +70,10 @@ describe("AddVacation", () => {
   });
 
   it("updates name input value", () => {
+    (useFetch as jest.Mock).mockReturnValue({
+        execute: mockExecute,
+        status: "initial",
+    });
     render(<AddVacation close={jest.fn()} />);
 
     const input = screen.getByLabelText("Nome") as HTMLInputElement;
@@ -59,6 +86,10 @@ describe("AddVacation", () => {
   });
 
   it("updates date inputs", () => {
+    (useFetch as jest.Mock).mockReturnValue({
+        execute: mockExecute,
+        status: "initial",
+    });
     render(<AddVacation close={jest.fn()} />);
 
     const start = screen.getByLabelText("Data Inicial") as HTMLInputElement;
@@ -77,6 +108,10 @@ describe("AddVacation", () => {
   });
 
   it("changes status when radio selected", () => {
+    (useFetch as jest.Mock).mockReturnValue({
+        execute: mockExecute,
+        status: "initial",
+    });
     render(<AddVacation close={jest.fn()} />);
 
     const approvedRadio = screen.getByLabelText(
@@ -89,6 +124,10 @@ describe("AddVacation", () => {
   });
 
   it("calls close when clicking Cancelar button", () => {
+    (useFetch as jest.Mock).mockReturnValue({
+        execute: mockExecute,
+        status: "initial",
+    });
     const closeMock = jest.fn();
 
     render(<AddVacation close={closeMock} />);
@@ -103,6 +142,10 @@ describe("AddVacation", () => {
   it("should call fetch when clicking Confirmar Solicitação button", () => {
     const closeMock = jest.fn();
 
+    (useFetch as jest.Mock).mockReturnValue({
+        execute: mockExecute,
+        status: "initial",
+    });
     render(<AddVacation close={closeMock} />);
 
     const input = screen.getByLabelText("Nome") as HTMLInputElement;
@@ -129,6 +172,10 @@ describe("AddVacation", () => {
   });
 
   it("should prevent fetch when clicking Confirmar Solicitação button if name has errors", () => {
+    (useFetch as jest.Mock).mockReturnValue({
+        execute: mockExecute,
+        status: "initial",
+    });
     (useValidation as jest.Mock).mockReturnValue({
       handleValidation: mockValidate,
       formErrors: { name: "O campo deve ter no mínimo 3 caracteres." },
@@ -159,6 +206,10 @@ describe("AddVacation", () => {
   });
 
   it("should prevent fetch when clicking Confirmar Solicitação button if date has errors", () => {
+    (useFetch as jest.Mock).mockReturnValue({
+        execute: mockExecute,
+        status: "initial",
+    });
     (useValidation as jest.Mock).mockReturnValue({
       handleValidation: mockValidate,
       formErrors: {
