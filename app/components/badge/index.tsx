@@ -1,5 +1,6 @@
 interface BadgeProps {
-  intention: "default" | "waiting" | "warning" | "danger" | "success";
+    intention: "default" | "waiting" | "warning" | "danger" | "success";
+    alternativeText?: string;
 }
 
 const classes = {
@@ -18,12 +19,12 @@ const messages = {
     success: "Aprovado",
 };
 
-export default function Badge({ intention }: BadgeProps) {
+export default function Badge({ intention, alternativeText }: BadgeProps) {
     return (
         <span
-            className={`px-4 py-2 rounded-full text-[#555555] ${classes[intention]}`}
+            className={`px-4 py-2 rounded-full text-[#555555] text-[12px] ${classes[intention]}`}
         >
-            {messages[intention]}
+            {alternativeText ?? messages[intention]}
         </span>
     );
 };
