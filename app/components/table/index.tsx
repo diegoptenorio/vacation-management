@@ -16,7 +16,7 @@ interface TableProps {
 export default function Table({ header, content }: TableProps) {
     return (
         <table className="w-full text-left">
-            <thead>
+            <thead className="hidden md:table-header-group">
                 <tr>
                     {header.map((title, index) => (
                         <th
@@ -30,20 +30,55 @@ export default function Table({ header, content }: TableProps) {
             </thead>
             <tbody>
                 {content.map((vacation, index) => (
-                    <tr key={index} className="border-t border-[#DDCBEC]">
-                        <td className="py-4 text-[#555555] text-[12px]">
+                    <tr key={index} className="md:border-t border-[#DDCBEC]">
+                        <td
+                            className="
+                            flex md:table-cell
+                            justify-between
+                            py-2 md:py-4
+                            text-[#555555] text-[12px]
+                            border-b md:border-0 border-[#DDCBEC]
+                        "
+                        >
                             <Badge intention={vacation.status} />
                         </td>
-                        <td className="py-4 text-[#555555] text-[12px]">
+                        <td
+                            className="
+                            flex md:table-cell
+                            justify-between
+                            py-2 md:py-4
+                            text-[#555555] text-[12px]
+                            border-b md:border-0 border-[#DDCBEC]
+                        "
+                        >
                             {vacation.name}
                         </td>
-                        <td className="py-4 text-[#555555] text-[12px]">
-                            {new Date(vacation.start_date).toLocaleDateString("pt-BR")}
+                        <td
+                            className="
+                            flex md:table-cell
+                            justify-between
+                            py-2 md:py-4
+                            text-[#555555] text-[12px]
+                            border-b md:border-0 border-[#DDCBEC]
+                        "
+                        >
+                            {new Date(vacation.start_date).toLocaleDateString(
+                                "pt-BR",
+                            )}
                         </td>
-                        <td className="py-4 text-[#555555] text-[12px]">
-                            {new Date(vacation.end_date).toLocaleDateString("pt-BR")}
+                        <td
+                            className="
+                            flex md:table-cell
+                            justify-between
+                            py-2 md:py-4
+                            text-[#555555] text-[12px]
+                            border-b md:border-0 border-[#DDCBEC]
+                        "
+                        >
+                            {new Date(vacation.end_date).toLocaleDateString(
+                                "pt-BR",
+                            )}
                         </td>
-                        <td className="py-4 text-[#555555] text-[12px]"></td>
                     </tr>
                 ))}
             </tbody>

@@ -42,7 +42,7 @@ export default function VacationList() {
     const content = data?.body?.content ?? [];
     const totalPages = data?.body?.pagination.totalPages ?? 1;
 
-    const header = ["Status", "Nome", "Início", "Fim", ""];
+    const header = ["Status", "Nome", "Início", "Fim"];
     
     const handlePageChange = useCallback((page: number) => {
         execute(
