@@ -51,14 +51,17 @@ export default function Insights() {
                             <Detail
                                 quantity={vacation_steps?.waiting}
                                 intention="default"
+                                alternativeText="Não iniciado"
                             />
                             <Detail
                                 quantity={vacation_steps?.approving}
                                 intention="warning"
+                                alternativeText="Em aprovação"
                             />
                             <Detail
                                 quantity={vacation_steps?.progress}
                                 intention="waiting"
+                                alternativeText="Em andamento"
                             />
                         </Card>
                         <Card>

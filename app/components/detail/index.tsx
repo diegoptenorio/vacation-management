@@ -6,13 +6,13 @@ import mountStringByQuantity from "../../../utils/match-string-to-quantity";
 interface ListProps {
     quantity?: string;
     intention: "default" | "waiting" | "warning" | "danger" | "success";
-    alternativeText?: string;
+    alternativeText: string;
 }
 
 export default function Detail({ quantity, intention, alternativeText }: ListProps) {
     return (
         <div className="flex flex-row justify-between mt-4">
-            <Badge intention={intention} alternativeText={alternativeText} />
+            <Badge intention={intention} label={alternativeText} />
             <button className="flex flex-row align-right items-center text-[#555555] text-[12px]">
                 {mountStringByQuantity({
                     quantity: quantity,

@@ -1,6 +1,6 @@
-interface BadgeProps {
+export interface BadgeProps {
     intention: "default" | "waiting" | "warning" | "danger" | "success";
-    alternativeText?: string;
+    label: string;
 }
 
 const classes = {
@@ -11,20 +11,12 @@ const classes = {
     success: "bg-green-500",
 };
 
-const messages = {
-    default: "Não iniciado",
-    waiting: "Em andamento",
-    warning: "Em aprovação",
-    danger: "Expirado",
-    success: "Aprovado",
-};
-
-export default function Badge({ intention, alternativeText }: BadgeProps) {
+export default function Badge({ intention, label }: BadgeProps) {
     return (
         <span
             className={`px-4 py-2 rounded-full text-[#555555] text-[12px] ${classes[intention]}`}
         >
-            {alternativeText ?? messages[intention]}
+            {label}
         </span>
     );
 };

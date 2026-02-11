@@ -1,83 +1,54 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
 import Table from "../../components/table";
 import Card from "../../components/card";
 import Title from "../../components/title";
 import Loading from "../../components/loading";
 import Fallback from "../../components/fallback";
 import Pagination from "../../components/pagination";
-import { useFetch } from "../../hooks/use-fetch";
-import ENDPOINT from "../../constants/endpoint";
+import Filter from "../../components/filter";
+import { useVacationList } from "./useVacationList";
 
-interface ContentProps {
-    id: string;
-    name: string;
-    start_date: string;
-    end_date: string;
-    status: "default" | "waiting" | "warning" | "danger" | "success";
-}
-
-interface DataProps {
-    status?: number;
-    body?: {
-        content: ContentProps[] | [];
-        pagination: {
-            page: number;
-            pageSize: number;
-            totalItems: number;
-            totalPages: number;
-        };
-    };
-}
+const filterOptions = [
+    { value: "status", label: "Status" },
+    { value: "name", label: "Nome" },
+    { value: "start", label: "Data de início" },
+    { value: "end", label: "Data de término" }
+];
 
 export default function VacationList() {
-    const { status, data, execute } = useFetch<DataProps>({
-        auto: false,
-        url: ENDPOINT.VACATIONS,
-    });
-
-    const [currentPage, setCurrentPage] = useState(1);
-
-    const content = data?.body?.content ?? [];
-    const totalPages = data?.body?.pagination.totalPages ?? 1;
-
-    const header = ["Status", "Nome", "Início", "Fim"];
-    
-    const handlePageChange = useCallback((page: number) => {
-        execute(
-            ENDPOINT.VACATIONS,
-            {
-                params: {
-                    page: page.toString(),
-                },
-            },
-        ); 
-    }, [execute]);
-
-    useEffect(() => {
-        handlePageChange(currentPage);
-    }, [currentPage, handlePageChange]);
-
+    const {
+        handlePageChange,
+        header,
+        content,
+        totalPages,
+        currentPage,
+        setCurrentPage,
+        status
+    } = useVacationList();
     return (
         <section>
-            {status === "loading" && <Loading />}
-            {status === "error" && <Fallback />}
-            {status === "success" && (
-                <>
-                    <Title type="h3" className="mt-[30px] mb-[16px]">
-                        Lista
-                    </Title>
-                    <Card>
+            <Title type="h3" className="mt-[30px] mb-[16px]">
+                Lista
+            </Title>
+            <Card>
+                <Filter
+                    action={handlePageChange}
+                    options={filterOptions}
+                />
+                {status === "loading" && <Loading />}
+                {status === "error" && <Fallback />}
+                {status === "success" && (
+                    <>
                         <Table header={header} content={content} />
                         <Pagination
                             totalPages={totalPages}
                             currentPage={currentPage}
                             onPageChange={setCurrentPage}
                         />
-                    </Card>
-                </>
-            )}
+                    </>
+                )}
+            </Card>
         </section>
     );
 }

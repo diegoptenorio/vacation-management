@@ -10,5 +10,8 @@ export default function mountStringByQuantity({
     plural = ""
 }: MountStringByQuantityProps) {
     const quantityNumber = Number(quantity);
-    return quantityNumber === 1 ? `${quantity} ${singular}` : `${quantity} ${plural}`;
+    return quantityNumber === 1 ?
+        `${quantity} ${singular}`
+        :
+        `${quantity} ${plural}`;
 };

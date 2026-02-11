@@ -1,12 +1,5 @@
 import Badge from "../badge";
-
-interface ContentProps {
-    id: string;
-    name: string;
-    start_date: string;
-    end_date: string;
-    status: "default" | "waiting" | "warning" | "danger" | "success";
-}
+import { ContentProps } from "../../features/vacation-list/useVacationList";
 
 interface TableProps {
     header: string[];
@@ -40,7 +33,7 @@ export default function Table({ header, content }: TableProps) {
                             border-b md:border-0 border-[#DDCBEC]
                         "
                         >
-                            <Badge intention={vacation.status} />
+                            <Badge intention={vacation.status.value} label={vacation.status.label} />
                         </td>
                         <td
                             className="
