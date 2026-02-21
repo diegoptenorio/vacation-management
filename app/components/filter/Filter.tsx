@@ -3,7 +3,7 @@ import Image from "next/image";
 import SearchIcon from "../../assets/img/search.png";
 import { FilterProps } from "./FilterProps";
 
-export const Filter = ({ action, options }: FilterProps) =>{
+export const Filter = ({ action, options }: FilterProps) => {
     const [form, setForm] = useState({
         type: options[0].value,
         value: "",
